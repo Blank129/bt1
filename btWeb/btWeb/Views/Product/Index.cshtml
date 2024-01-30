@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+@model List<btWeb.Models.ProductModel>
+<div id="productList">
+    @Html.Partial("getProduct", Model)
+</div>
+
+<button id="loadProduct">Load Product</button>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#loadProduct").click(function () {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("getProduct", "Product")',
+                data: {},
+                success: function (result) {
+                    $("#productList").html(result);
+                },
+                error: function () {
+                    alert("Error");
+                }
+            });
+        })
+    })
+</script>
+
+<div>
+    <form id="formProduct">
+        <label id="productName">Name</label>
+        <input id="productName" type="text" name="Name" required />
+
+        <label id="productPrice">Price</label>
+        <input id="productPrice" type="number" name="Price" required />
+
+        <button type="button" onclick="addProduct()">Add Product</button>
+    </form>
+</div>
+
+<script>
+    function addProduct() {
+        var dataform = $("#formProduct").serialize();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("AddProduct", "Product")',
+                data: dataform,
+                success: function (result) {
+                    if (result.success) {
+                        var newProduct = result.Product;
+                        $("#productList ul").append("<li>" + newProduct.Name + " - $" + newProduct.Price + "</li>");
+                    }
+                },
+                error: function () {
+                    alert("Error");
+                }
+            });
+    }
+</script>

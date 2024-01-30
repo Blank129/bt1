@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewBag.Title = "getProduct";
+}
+
+@model List<btWeb.Models.ProductModel>
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>@item.Name - @item.Price</li>
+    }
+</ul>
+
